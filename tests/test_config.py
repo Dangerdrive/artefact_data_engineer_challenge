@@ -29,3 +29,12 @@ def test_generation_defaults(monkeypatch) -> None:  # noqa: ANN001
     settings = load_settings()
     assert settings.temperature == 0.3
     assert settings.max_tokens == 512
+
+
+def test_deepseek_provider_defaults(monkeypatch) -> None:  # noqa: ANN001
+    monkeypatch.setenv("LLM_PROVIDER", "deepseek")
+    monkeypatch.delenv("LLM_BASE_URL", raising=False)
+    monkeypatch.delenv("LLM_MODEL", raising=False)
+    settings = load_settings()
+    assert settings.base_url == "https://api.deepseek.com"
+    assert settings.model == "deepseek-chat"

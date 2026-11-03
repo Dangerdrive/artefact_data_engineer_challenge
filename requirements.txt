@@ -1,8 +1,8 @@
 # Runtime (required)
 pypdf>=5.0,<7
 
-# Optional: LLM mode (OpenAI-compatible provider with function calling)
-openai>=1.40,<2
+# Optional: LLM mode (OpenAI-compatible provider, e.g. DeepSeek)
+openai>=1.40
 
 # Development / quality
 pytest>=7.4,<9

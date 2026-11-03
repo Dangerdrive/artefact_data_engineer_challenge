@@ -14,7 +14,20 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_DATA_DIR = PROJECT_ROOT / "Desafio Técnico AI Engineer 2026" / "data"
 
 # Placeholder values that should not be treated as real credentials.
-_PLACEHOLDER_KEYS = {"sk-replace-with-your-key", "sk-substitua-sua-chave", ""}
+_PLACEHOLDER_KEYS = {
+    "sk-replace-with-your-key",
+    "sk-replace-with-your-deepseek-key",
+    "sk-substitua-sua-chave",
+    "",
+}
+
+# Sensible defaults per OpenAI-compatible provider (all values can be overridden
+# through environment variables). DeepSeek is the default for this project.
+_PROVIDER_DEFAULTS: dict[str, dict[str, str]] = {
+    "deepseek": {"base_url": "https://api.deepseek.com", "model": "deepseek-chat"},
+    "openai": {"model": "gpt-4o-mini"},
+    "groq": {"base_url": "https://api.groq.com/openai/v1", "model": "llama-3.3-70b-versatile"},
+}
 
 
 def _load_dotenv(path: Path) -> None:
@@ -74,11 +87,16 @@ def load_settings(project_root: Path | None = None) -> Settings:
     if api_key is not None:
         api_key = api_key.strip()
 
+    provider = os.getenv("LLM_PROVIDER", "deepseek").strip().lower()
+    defaults = _PROVIDER_DEFAULTS.get(provider, {})
+    model = os.getenv("LLM_MODEL") or defaults.get("model", "gpt-4o-mini")
+    base_url = os.getenv("LLM_BASE_URL") or defaults.get("base_url")
+
     return Settings(
-        provider=os.getenv("LLM_PROVIDER", "openai"),
-        model=os.getenv("LLM_MODEL", "gpt-4o-mini"),
+        provider=provider,
+        model=model,
         api_key=api_key or None,
-        base_url=(os.getenv("LLM_BASE_URL") or None),
+        base_url=base_url or None,
         log_level=os.getenv("LOG_LEVEL", "INFO").upper(),
         conversation_store=os.getenv("CONVERSATION_STORE", "memory"),
         temperature=_env_float("LLM_TEMPERATURE", 0.3),

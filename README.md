@@ -42,17 +42,22 @@ python -m src.cli --offline
 python -m src.cli --offline -m "How much is the Takamine GD20?"
 ```
 
-### LLM mode (optional)
+### LLM mode (DeepSeek)
+
+DeepSeek is OpenAI-compatible, so the same SDK works by pointing the base URL to
+`https://api.deepseek.com`.
 
 ```bash
-cp .env.example .env      # then set LLM_API_KEY (and optionally LLM_MODEL / LLM_BASE_URL)
-pip install ".[llm]"      # installs the openai SDK
-python -m src.cli
+cp .env.example .env      # set LLM_API_KEY to your DeepSeek key
+pip install -r requirements.txt   # installs the openai SDK
+python -m src.cli         # LLM mode is used automatically when a key is set
 ```
 
-Any **OpenAI-compatible** provider works (OpenAI, Groq, Together, local servers) by
-setting `LLM_BASE_URL`. If the LLM call fails, the agent transparently falls back to
-offline mode.
+Defaults in `.env.example`: `LLM_PROVIDER=deepseek`, `LLM_MODEL=deepseek-chat`,
+`LLM_BASE_URL=https://api.deepseek.com`. `deepseek-chat` supports function calling
+(tools); `deepseek-reasoner` does not. Any OpenAI-compatible provider (OpenAI, Groq,
+Together, local servers) also works by adjusting these values. If a model call fails,
+the agent transparently falls back to offline mode.
 
 ### Tests
 
@@ -97,7 +102,7 @@ flowchart LR
 | Decision | Choice | Why |
 |----------|--------|-----|
 | Approach | **Function calling + RAG** | Deterministic data via tools; unstructured policies via retrieval. |
-| Model | **Configurable OpenAI-compatible** (default economical) | Low cost; swap provider without refactoring. |
+| Model | **DeepSeek (default)** via OpenAI-compatible API; configurable | Cheap, fast, supports function calling; swap provider without refactoring. |
 | Interface | **CLI** (+ optional API later) | Simplest way to demonstrate the agent working. |
 | History | **In-memory** (+ optional SQLite) | Multi-turn context; easy to extend. |
 | Data | **SQLite (stdlib)** loaded from CSVs; `pypdf` for policies | Zero extra runtime dependency; fast, deterministic queries. |

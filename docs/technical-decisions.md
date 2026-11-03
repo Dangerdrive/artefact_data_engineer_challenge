@@ -24,15 +24,16 @@ Each decision from the brief is answered with **choice + justification**.
 
 ## 2. Model and Provider
 
-**Choice:** **configurable provider via an OpenAI-compatible SDK**; economical default
-(e.g. `gpt-4o-mini` or a free Groq/Llama model).
+**Choice:** **DeepSeek** as the default, via its **OpenAI-compatible API**
+(`LLM_BASE_URL=https://api.deepseek.com`, `LLM_MODEL=deepseek-chat`); still configurable
+for any OpenAI-compatible provider (OpenAI, Groq, Together, local servers).
 
 **Justification:**
-- The brief allows paid or free, local or API. The abstraction keeps the project
-  **runnable at low cost** and **swappable** across providers (openai, groq, together…).
-- For the MVP, a small/fast model is sufficient (a customer-service task with tools).
+- DeepSeek is low-cost and fast, and `deepseek-chat` supports function calling (tools).
+- The OpenAI-compatible interface keeps the project **swappable** across providers with no
+  code changes — only environment variables.
 - The key stays in `.env` (never committed); `LLM_BASE_URL` allows pointing to any
-  compatible endpoint.
+  compatible endpoint. If the call fails, the agent falls back to offline mode.
 
 ## 3. Interaction Interface
 
@@ -110,7 +111,7 @@ deterministic offline mode that share the exact same tools.
 | Decision | Choice |
 |----------|--------|
 | Approach | Hybrid function calling (ReAct) + RAG |
-| Model/Provider | Configurable (OpenAI-compatible); economical default |
+| Model/Provider | DeepSeek `deepseek-chat` (default), configurable via OpenAI-compatible API |
 | Interface | CLI (MVP) + optional FastAPI |
 | History | In-memory + optional SQLite |
 | Data | SQLite (CSVs) + pypdf (policies) |

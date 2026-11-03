@@ -75,7 +75,7 @@ customer service.
 | Decision | Proposal | Short rationale |
 |----------|----------|-----------------|
 | Approach | **Hybrid: function calling + RAG** | Structured data (CSV) via tools/SQL; unstructured policies (PDF) via retrieval. |
-| Model/Provider | **Configurable (OpenAI-compatible)**; economical default (e.g. `gpt-4o-mini` or Groq Llama) | Low cost, easy provider swap without refactoring. |
+| Model/Provider | **DeepSeek `deepseek-chat`** (default) via OpenAI-compatible API; configurable | Low cost, function calling, easy provider swap without refactoring. |
 | Interface | **CLI** as MVP + optional **FastAPI** | Simple to run and demo; API ready to evolve. |
 | History | **In-memory + optional SQLite persistence** | Multi-turn context per customer; persistence enables continuity. |
 | Data handling | Load CSVs into **DuckDB/SQLite**; extract PDF into a RAG index | Fast, deterministic queries; semantic policies. |
@@ -202,6 +202,7 @@ Summary of the adopted and documented best practices in
 | 2026-11-03 | Converted all documentation, filenames, and config comments to English | English-only project (docs, filenames, and deliverables) | Create the Python project scaffold (F2) and implement the data layer (F3) |
 | 2026-11-03 | Implemented the Python agent: env config, SQLite data layer, policy retrieval, tools, dual-mode orchestrator (LLM + offline), CLI, 30 pytest tests and 5 example conversations; updated the README | SQLite (stdlib) instead of DuckDB for a zero-dependency data layer; deterministic offline fallback; pronoun follow-ups in offline mode | Publish the repo publicly and do a final review (F9) |
 | 2026-11-03 | Review/improvement pass: fixed ruff E501 (line-length 120), added an input-length guard, configurable `temperature`/`max_tokens`, an LLM history window, a CI workflow, an MIT license, an examples README and 7 new tests (37 total) | Ruff line-length 120 for verbose tool schemas; added CI + license; configurable generation params | Publish repo; optional FastAPI + persistence + embeddings |
+| 2026-11-03 | Configured the LLM mode for the **DeepSeek API** (OpenAI-compatible): provider defaults (base URL + `deepseek-chat`), `.env.example`, README/technical-decisions; added tests for the function-calling loop, offline fallback and provider defaults (40 total) | Default provider = DeepSeek `deepseek-chat` (supports tools); `deepseek-reasoner` noted as a non-tool alternative | Run a live smoke test with a real DeepSeek key; publish repo |
 
 ### Current State (summary)
 
@@ -212,7 +213,7 @@ Summary of the adopted and documented best practices in
 - [x] Agent tools
 - [x] Orchestrator and prompt
 - [x] Interface (CLI; API deferred)
-- [x] Tests (37 passing) + ruff clean + CI workflow
+- [x] Tests (40 passing) + ruff clean + CI workflow
 - [x] Example conversations (5)
 - [x] Final README, docs and license
 
