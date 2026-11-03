@@ -59,6 +59,10 @@ Defaults in `.env.example`: `LLM_PROVIDER=deepseek`, `LLM_MODEL=deepseek-chat`,
 Together, local servers) also works by adjusting these values. If a model call fails,
 the agent transparently falls back to offline mode.
 
+> Note: some `openai` builds bundle an httpx variant with a broken gzip decoder
+> (`process() takes no keyword arguments`). The agent requests `Accept-Encoding: identity`
+> to avoid it, so DeepSeek calls work out of the box.
+
 ### Tests
 
 ```bash

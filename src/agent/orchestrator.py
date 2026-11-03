@@ -138,7 +138,14 @@ class Agent:
     def _chat_llm(self) -> str:
         from openai import OpenAI  # imported lazily so offline mode needs no extra dep
 
-        client = OpenAI(api_key=self.settings.api_key, base_url=self.settings.base_url or None)
+        client = OpenAI(
+            api_key=self.settings.api_key,
+            base_url=self.settings.base_url or None,
+            # Some OpenAI SDK builds bundle an httpx variant whose gzip decoder is
+            # broken ("process() takes no keyword arguments"). Asking for identity
+            # encoding avoids that broken decompression path and is harmless otherwise.
+            default_headers={"Accept-Encoding": "identity"},
+        )
         recent = self.history[-MAX_HISTORY_MESSAGES:]
         messages: list[dict[str, Any]] = [{"role": "system", "content": SYSTEM_PROMPT}] + [
             {"role": m["role"], "content": m["content"]} for m in recent
