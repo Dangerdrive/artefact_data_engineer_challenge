@@ -1,42 +1,149 @@
-# Empório da Música — Customer Service Agent (Artefact AI Engineer Challenge)
+# Empório da Música — Customer Service Agent
 
-> Working repository for the **AI Engineer** technical challenge at Artefact (2026).
-> Mission: prototype a Python text-messaging agent that serves customers of the fictional
-> **Empório da Música** store (Campo Grande/MS, Brazil).
+A Python text-messaging agent that assists the customer service team of **Empório da
+Música**, a fictional musical-instrument store in Campo Grande/MS (Brazil). Built as the
+technical case for the **AI Engineer** role at **Artefact (2026)**.
 
-## 📌 Current Status
+The agent ("Lira") answers questions about the catalog, prices, stock, orders and store
+policies, using a **hybrid architecture**: tools/function calling for structured data and
+retrieval (RAG) for the policies manual.
 
-- [x] Challenge, data and policies analyzed
-- [x] Planning documentation created
-- [ ] Agent implementation (in progress — see [planning](docs/planning.md))
+---
 
-> The full status and session log are in [`docs/planning.md`](docs/planning.md).
+## ✨ Features
 
-## 🗂️ Navigation
+- **Persona** aligned with the store's tone (warm, informal but professional).
+- **Catalog & price search** with budget/category filters and active-promotion pricing.
+- **Stock awareness** (out-of-stock, discontinued and coming-soon handling).
+- **Order status & tracking** by order id or tracking code.
+- **Policy answers** (returns, hours, payment, shipping, warranty, privacy) via retrieval.
+- **Out-of-scope handling** (politely redirects accessory requests).
+- **Conversation history** in memory, with pronoun follow-ups ("Do you have *it* in stock?").
+- **Two execution modes:**
+  - **LLM mode** — OpenAI-compatible model with function calling (needs an API key).
+  - **Offline mode** — deterministic rule-based fallback that uses the same tools, so the
+    agent is always runnable and testable without credentials.
+
+---
+
+## 🚀 Quickstart
+
+```bash
+# 1. (optional) create a virtual environment
+python -m venv .venv && source .venv/bin/activate
+
+# 2. install dependencies
+pip install -r requirements.txt
+
+# 3. run the agent (offline mode — no API key required)
+python -m src.cli --offline
+
+# single message
+python -m src.cli --offline -m "How much is the Takamine GD20?"
+```
+
+### LLM mode (optional)
+
+```bash
+cp .env.example .env      # then set LLM_API_KEY (and optionally LLM_MODEL / LLM_BASE_URL)
+pip install ".[llm]"      # installs the openai SDK
+python -m src.cli
+```
+
+Any **OpenAI-compatible** provider works (OpenAI, Groq, Together, local servers) by
+setting `LLM_BASE_URL`. If the LLM call fails, the agent transparently falls back to
+offline mode.
+
+### Tests
+
+```bash
+python -m pytest
+```
+
+---
+
+## 🧠 How it works
+
+```mermaid
+flowchart LR
+    U[User] --> I[CLI]
+    I --> A[Agent orchestrator]
+    A -->|function calling| T[Tools]
+    A -->|retrieval| P[(Policies index)]
+    T --> D[(SQLite: CSVs)]
+    A --> L[LLM provider]
+    A --> H[(History)]
+```
+
+| Component | Responsibility |
+|-----------|----------------|
+| `src/cli.py` | CLI entry point (interactive or single message). |
+| `src/agent/orchestrator.py` | Agent loop, history, LLM function-calling and offline fallback. |
+| `src/agent/tools.py` | Tool schemas + implementations (catalog, orders, policies, shipping). |
+| `src/agent/prompt.py` | System prompt: persona + hard rules. |
+| `src/data/store.py` | Loads the CSVs into an in-memory SQLite database and queries it. |
+| `src/data/policies.py` | Extracts the PDF manual and retrieves policy sections. |
+
+**Tools:** `search_products`, `get_product`, `get_order_status`, `query_policies`,
+`calc_shipping`, `get_store_info`.
+
+---
+
+## 🧭 Design Decisions (summary)
+
+| Decision | Choice | Why |
+|----------|--------|-----|
+| Approach | **Function calling + RAG** | Deterministic data via tools; unstructured policies via retrieval. |
+| Model | **Configurable OpenAI-compatible** (default economical) | Low cost; swap provider without refactoring. |
+| Interface | **CLI** (+ optional API later) | Simplest way to demonstrate the agent working. |
+| History | **In-memory** (+ optional SQLite) | Multi-turn context; easy to extend. |
+| Data | **SQLite (stdlib)** loaded from CSVs; `pypdf` for policies | Zero extra runtime dependency; fast, deterministic queries. |
+| Execution | **Dual mode: LLM + offline fallback** | Always runnable/testable, even without an API key. |
+
+Full rationale: [`docs/technical-decisions.md`](docs/technical-decisions.md).
+
+---
+
+## ⚠️ Known Limitations & Next Steps
+
+- The **offline mode** is intentionally rule-based and covers the main intents; the
+  **LLM mode** is the general-purpose path.
+- No persistent storage across processes yet (history is in memory).
+- Shipping for other cities is an estimate; real quotes need ZIP/weight/dimensions.
+- Next steps: optional FastAPI endpoint, SQLite conversation persistence, embedding-based
+  retrieval, and a larger evaluation (golden set + LLM-as-a-judge).
+
+---
+
+## 🤖 Use of AI Code Assistants
+
+This project was built with **GitHub Copilot** (agent mode) as a pair-programmer:
+
+- **Scaffolding & documentation:** the planning docs, skill, and README structure.
+- **Implementation:** data layer (SQLite loader + queries), policy retrieval, tools,
+  orchestrator (LLM + offline modes) and CLI.
+- **Tests:** the `pytest` suite covering the data layer, policies, tools and agent.
+
+All architectural decisions, data interpretation and review were done by the developer;
+Copilot accelerated boilerplate, tests and documentation. The `docs/` folder keeps a live
+session log of the work.
+
+---
+
+## 🗂️ Documentation
 
 | Document | Content |
 |----------|---------|
-| [docs/planning.md](docs/planning.md) | **Source of truth** — implementation plan + project state log |
-| [docs/data.md](docs/data.md) | Data dictionary and statistics of the 6 CSVs |
-| [docs/policies.md](docs/policies.md) | Store policies manual digest |
-| [docs/architecture.md](docs/architecture.md) | Proposed solution architecture |
+| [docs/planning.md](docs/planning.md) | Implementation plan + live project state log |
+| [docs/data.md](docs/data.md) | Data dictionary and statistics |
+| [docs/policies.md](docs/policies.md) | Store policies digest |
+| [docs/architecture.md](docs/architecture.md) | Architecture details |
 | [docs/technical-decisions.md](docs/technical-decisions.md) | Justified technical decisions |
-| [docs/best-practices.md](docs/best-practices.md) | Best practices included in the project |
-| [docs/example-interactions.md](docs/example-interactions.md) | Plan for the example conversations |
+| [docs/best-practices.md](docs/best-practices.md) | Best practices included |
+| [docs/example-interactions.md](docs/example-interactions.md) | Example conversations plan |
+| [examples/](examples/) | 5 example conversations (English) |
 
-## 🧭 Original Materials
+## 🧾 Materials
 
-- `Desafio Técnico AI Engineer 2026/desafio_tecnico_ai_eng_artefact.pdf` — challenge brief
-- `Desafio Técnico AI Engineer 2026/data/*.csv` — operational data
-- `Desafio Técnico AI Engineer 2026/data/políticas_da_loja.pdf` — policies and procedures manual
-
-## 🧠 Maintenance Skill
-
-This repository has a skill (`.github/skills/emporio-musica-agent/SKILL.md`) that ensures
-**the project state is recorded in `docs/planning.md` at the end of every work session**.
-
-## ⚠️ Mandatory Deliverables
-
-1. Public Git repository with a real commit history.
-2. `README.md` in **English** (setup, decisions, limitations, AI-assistant usage).
-3. 3 to 5 example conversations, including at least one non-trivial scenario.
+Original challenge materials are in `Desafio Técnico AI Engineer 2026/` (PDF brief, 6 CSVs
+and the policies manual).

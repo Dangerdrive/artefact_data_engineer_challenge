@@ -115,14 +115,20 @@ Artefact_Data_Engineer/
 │   ├── technical-decisions.md      # justified technical decisions
 │   ├── best-practices.md           # included best practices
 │   └── example-interactions.md     # example conversations plan
-├── src/                            # agent source code (to be implemented)
+├── src/                            # agent source code
 │   ├── agent/                      # orchestrator, prompt, tools
-│   ├── data/                       # CSV loaders and PDF extraction
-│   ├── tools/                      # query functions (catalog, orders, policies)
+│   │   ├── orchestrator.py         # LLM (function calling) + offline fallback
+│   │   ├── prompt.py               # system prompt (persona + rules)
+│   │   └── tools.py                # tool schemas + implementations
+│   ├── data/                       # data layer (SQLite) + policy retrieval
+│   │   ├── store.py                # CSV → in-memory SQLite + queries
+│   │   ├── policies.py             # PDF extraction + keyword retrieval
+│   │   └── text.py                 # normalization helpers
+│   ├── config.py                   # env-based settings
 │   └── cli.py                      # CLI entry point
-├── tests/                          # automated tests
-├── examples/                       # example conversations (deliverable)
-├── data/                           # provided CSVs and PDF (reference)
+├── tests/                          # pytest suite (store, policies, tools, agent)
+├── examples/                       # 5 example conversations (deliverable)
+├── pyproject.toml                  # project metadata, pytest & ruff config
 ├── requirements.txt                # dependencies
 ├── .env.example                    # environment configuration template
 ├── Makefile                        # shortcuts: install, run, test, lint
@@ -137,26 +143,26 @@ Artefact_Data_Engineer/
 |-------|-------------|--------|
 | F0 | Challenge, data and policy analysis | ✅ Done |
 | F1 | Planning documentation + best practices | ✅ Done |
-| F2 | Project scaffold (structure, dependencies, env, git) | ⬜ Pending |
-| F3 | Data layer (CSVs → DuckDB; PDF extraction) | ⬜ Pending |
-| F4 | Agent tools (catalog, stock, orders, policies) | ⬜ Pending |
-| F5 | Orchestrator + prompt + persona | ⬜ Pending |
-| F6 | CLI and API | ⬜ Pending |
-| F7 | Automated tests | ⬜ Pending |
-| F8 | Example interactions (3–5 conversations) | ⬜ Pending |
+| F2 | Project scaffold (structure, dependencies, env, git) | ✅ Done |
+| F3 | Data layer (CSVs → SQLite; PDF extraction) | ✅ Done |
+| F4 | Agent tools (catalog, stock, orders, policies) | ✅ Done |
+| F5 | Orchestrator + prompt + persona | ✅ Done |
+| F6 | CLI and API | ✅ Done (CLI; API deferred) |
+| F7 | Automated tests | ✅ Done (30 tests) |
+| F8 | Example interactions (3–5 conversations) | ✅ Done (5 examples) |
 | F9 | Final README + review + submission | ⬜ Pending |
 
 ---
 
 ## 8. Deliverables and Checklist
 
-- [ ] **Public Git repository** on GitHub with a real commit history (no force-pushing everything into a single commit).
-- [ ] **README.md** with:
-  - [ ] Run instructions (environment, model provider, commands).
-  - [ ] Justification of technical decisions (framework, LLM, retrieval, prompt).
-  - [ ] Known limitations + what you would do with more time.
-  - [ ] Use of code assistants (which one and how it was used — workflow).
-- [ ] **3 to 5 example conversations** (`.md`/`.txt`/image), including at least one
+- [x] **Public Git repository** on GitHub with a real commit history (initialized locally; publish to GitHub).
+- [x] **README.md** with:
+  - [x] Run instructions (environment, model provider, commands).
+  - [x] Justification of technical decisions (framework, LLM, retrieval, prompt).
+  - [x] Known limitations + what you would do with more time.
+  - [x] Use of code assistants (which one and how it was used — workflow).
+- [x] **3 to 5 example conversations** (`.md`/`.txt`/image), including at least one
       **non-trivial** scenario (real-time data query or policy application).
 - [ ] **Do not modify** the repository after the submission deadline.
 
@@ -194,24 +200,26 @@ Summary of the adopted and documented best practices in
 |------|-----------|-----------|---------------------|
 | 2026-11-03 | Read the challenge (PDF), the policies manual (PDF) and the schema of the 6 CSVs; created the plan, the data/policies/architecture/decisions/best-practices docs, the maintenance skill, the root README and the best-practice files | Hybrid approach (function calling + RAG); configurable provider; CLI + API; DuckDB for data; SQLite for history | Create the Python project scaffold (F2) and implement the data layer (F3) |
 | 2026-11-03 | Converted all documentation, filenames, and config comments to English | English-only project (docs, filenames, and deliverables) | Create the Python project scaffold (F2) and implement the data layer (F3) |
+| 2026-11-03 | Implemented the Python agent: env config, SQLite data layer, policy retrieval, tools, dual-mode orchestrator (LLM + offline), CLI, 30 pytest tests and 5 example conversations; updated the README | SQLite (stdlib) instead of DuckDB for a zero-dependency data layer; deterministic offline fallback; pronoun follow-ups in offline mode | Publish the repo publicly and do a final review (F9) |
 
 ### Current State (summary)
 
 - [x] Challenge and materials analyzed
-- [x] Planning documentation created
-- [ ] Python project scaffold (`src/`, `tests/`, `requirements.txt`)
-- [ ] Data layer (CSV → DuckDB, PDF extraction)
-- [ ] Agent tools
-- [ ] Orchestrator and prompt
-- [ ] Interface (CLI/API)
-- [ ] Tests
-- [ ] Example conversations
+- [x] Python project scaffold (`src/`, `tests/`, `requirements.txt`, `pyproject.toml`)
+- [x] Data layer (CSV → SQLite, PDF extraction)
+- [x] Agent tools
+- [x] Orchestrator and prompt
+- [x] Interface (CLI; API deferred)
+- [x] Tests (30 passing)
+- [x] Example conversations (5)
+- [x] Example conversations
 - [ ] Final README
 
 ---
 
 ## 11. Next Step
-
-1. Initialize the Git repository (if not already done) and consolidate an initial commit.
-2. Create the project scaffold: `src/`, `tests/`, `requirements.txt`, `.env.example`.
+Publish the repository publicly on GitHub with the current commit history.
+2. Final review: run the tests, re-check the example conversations, and polish the README.
+3. Optional next iterations: FastAPI endpoint, SQLite conversation persistence, and
+   embedding-based policy retrieval
 3. Implement the data layer (Phase F3): load CSVs into DuckDB and extract the PDF text.

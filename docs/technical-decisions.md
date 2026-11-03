@@ -56,11 +56,13 @@ Each decision from the brief is answered with **choice + justification**.
 
 ## 5. Data Handling
 
-**Choice:** load the CSVs into **DuckDB** (embedded) and extract the PDF with **pypdf**,
-chunked into a policies index.
+**Choice:** load the CSVs into an **in-memory SQLite** database (Python stdlib) and extract
+the PDF with **pypdf**, chunked into a policies index.
 
 **Justification:**
-- DuckDB: fast serverless SQL; easy typing and joins (`orders ⋈ order_items ⋈ products`).
+- SQLite: serverless, zero extra dependency, and SQL joins are easy (`orders ⋈ order_items
+  ⋈ products`). The dataset is tiny, so an in-memory database is more than enough.
+- (DuckDB was considered but dropped to keep the project dependency-light.)
 - `specs` (JSON) is parsed to allow filtering (e.g. "nylon-string acoustic guitar").
 - Promotions: only `is_active = 1`; the promotional price is computed and shown with the
   original price + percentage.
@@ -88,6 +90,21 @@ and, with more time, via LLM-as-a-judge.
 
 ---
 
+## 8. Execution Modes (LLM + Offline Fallback)
+
+**Choice:** a **durable dual-mode design** — an LLM function-calling mode and a
+deterministic offline mode that share the exact same tools.
+
+**Justification:**
+- The offline mode guarantees the agent is **always runnable and testable**, even without an
+  API key or network — ideal for the evaluator and for CI.
+- The LLM mode is the general-purpose path; if a model call fails, the agent **falls back**
+  to offline mode instead of breaking the conversation.
+- Sharing the tool layer between both modes guarantees the numbers (price/stock/order) come
+  from the same deterministic source in either mode.
+
+---
+
 ## Decision Summary
 
 | Decision | Choice |
@@ -96,5 +113,5 @@ and, with more time, via LLM-as-a-judge.
 | Model/Provider | Configurable (OpenAI-compatible); economical default |
 | Interface | CLI (MVP) + optional FastAPI |
 | History | In-memory + optional SQLite |
-| Data | DuckDB (CSVs) + pypdf (policies) |
+| Data | SQLite (CSVs) + pypdf (policies) |
 | Prompt | Persona + hard rules + tools in schema |

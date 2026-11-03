@@ -15,7 +15,7 @@ flowchart LR
     O --> T2[Tool: price_stock]
     O --> T3[Tool: order_status]
     O --> T4[Tool: query_policies]
-    T1 & T2 & T3 --> DB[(DuckDB / SQLite<br/>loaded CSVs)]
+    T1 & T2 & T3 --> DB[(SQLite in-memory<br/>loaded CSVs)]
     T4 --> V[(Semantic index<br/>policies PDF)]
     O --> L[LLM Provider<br/>configurable]
     O --> H[(Conversation history<br/>in-memory / SQLite)]
@@ -29,7 +29,7 @@ flowchart LR
 | **Orchestrator** | Agent loop: decide tool vs. reply | ReAct + function calling via provider SDK |
 | **System prompt** | Persona, tone, scope and accuracy rules | Versioned template (Jinja2 or f-string) |
 | **Tools** | Deterministic data queries | Python + SQL over DuckDB |
-| **Data layer** | Load CSVs → DuckDB; extract PDF | `pandas`/`duckdb` + `pypdf` |
+| **Data layer** | Load CSVs → in-memory SQLite; extract PDF | `sqlite3` (stdlib) + `pypdf` |
 | **Policies RAG** | Retrieve relevant manual sections | Chunking + embeddings + search (or BM25 for MVP) |
 | **History** | Multi-turn context per customer | In-memory + optional SQLite persistence |
 | **Config** | Provider, model, keys, flags | `python-dotenv` + `.env` |
@@ -67,7 +67,7 @@ sequenceDiagram
 
 ## 5. Key Architecture Decisions
 
-1. **DuckDB (embedded, no server):** fast SQL over CSVs without infrastructure.
+1. **SQLite (stdlib, in-memory):** fast SQL over CSVs with no extra dependency or server.
 2. **Tools = Python functions with JSON schema:** allow swapping the LLM provider without
    changing the data logic.
 3. **RAG separate from tools:** policies change per document; data changes per query.

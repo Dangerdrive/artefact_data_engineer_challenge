@@ -32,26 +32,26 @@ List of best practices adopted in this project, with what was included and why.
 
 - **What:** type annotations on functions and docstrings in modules.
 - **Why:** readability, maintainability, and static-analysis tool support.
-- **Status:** 📌 to apply in the source code (from Phase F2/F3 onward).
+- **Status:** ✅ applied across `src/` (type hints + docstrings).
 
 ## 6. Lint and Formatting (ruff)
 
 - **What:** `ruff` for lint + formatting (replaces flake8/black/isort).
 - **Why:** consistent code and early problem detection.
-- **Status:** ✅ dependency included; config/CI to add with the scaffold.
+- **Status:** ✅ configured in `pyproject.toml` (`ruff`).
 
 ## 7. Automated Tests (pytest)
 
 - **What:** unit tests for the tools (deterministic) and orchestrator tests with a mocked
   LLM (no network/key dependency).
 - **Why:** guarantee that price/stock/status are never wrong.
-- **Status:** 📌 to implement (Phase F7); dependency already listed.
+- **Status:** ✅ 30 tests in `tests/` (offline, no network/key needed).
 
 ## 8. Structured Logging
 
 - **What:** per-turn logs: message, tool called, latency, tokens used.
 - **Why:** debugging, auditing, and token-cost control.
-- **Status:** 📌 to implement.
+- **Status:** ✅ basic logging in place (fallback warnings + configurable log level).
 
 ## 9. Cross-Editor Consistency (`.editorconfig`)
 
@@ -83,20 +83,21 @@ List of best practices adopted in this project, with what was included and why.
 
 - **What:** economical default model, token limits, caching/avoiding unnecessary calls.
 - **Why:** reduce cost and latency when using an LLM via API.
-- **Status:** 📌 to implement.
+- **Status:** ✅ partial (economical default, capped tool loop, low temperature).
 
 ## 14. Error Handling and Fallback
 
 - **What:** catch LLM API failures and return a friendly unavailability message; never
   freeze the conversation.
 - **Why:** robustness of the customer service experience.
-- **Status:** 📌 to implement.
+- **Status:** ✅ LLM→offline fallback and safe tool-argument error handling.
 
 ---
 
 ## Status Summary
 
-- ✅ **Already included:** Git, `.gitignore`, `.env.example`, `requirements.txt`,
-  `.editorconfig`, `Makefile`, living docs, maintenance skill.
-- 📌 **To include with the code:** type hints, ruff, pytest, logging, token control,
-  error handling.
+- ✅ **Included:** Git, `.gitignore`, `.env.example`, `requirements.txt`, `.editorconfig`,
+  `Makefile`, living docs, maintenance skill, type hints/docstrings, ruff config, 30 pytest
+  tests, basic logging, and error handling/fallback.
+- 🔜 **Future:** richer token/cost instrumentation and embedding-based retrieval with
+  caching.
