@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "emporio-musica-agent"
+version = "0.1.0"
+description = "Customer service agent for the fictional Empório da Música store (Artefact AI Engineer challenge)."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pypdf>=5.0,<7",
+]
+
+[project.optional-dependencies]
+llm = ["openai>=1.40,<2"]
+dev = ["pytest>=7.4,<9", "ruff>=0.6,<1"]
+
+[project.scripts]
+emporio-agent = "src.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["src*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
