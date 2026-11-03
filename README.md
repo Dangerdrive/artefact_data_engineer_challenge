@@ -74,6 +74,19 @@ CI runs lint (`ruff`) and tests (`pytest`) on every push/PR — see
 
 ---
 
+## ☁️ Deploy on Vercel
+
+The project includes a FastAPI app (`src/api.py`) and a Vercel entrypoint
+(`api/index.py`). Import the repo in Vercel, set the environment variables in the
+dashboard (e.g. `LLM_API_KEY`), and deploy — `vercel.json` configures the Python
+runtime and bundles `src/` + `data/`.
+
+Endpoints: `GET /api/health` and `POST /api/chat` (body: `{"message": "..."}`).
+See [`docs/deployment.md`](docs/deployment.md) for details and caveats
+(serverless conversation sessions are in-memory).
+
+---
+
 ## 🧠 How it works
 
 ```mermaid
@@ -153,6 +166,7 @@ session log of the work.
 | [docs/technical-decisions.md](docs/technical-decisions.md) | Justified technical decisions |
 | [docs/best-practices.md](docs/best-practices.md) | Best practices included |
 | [docs/example-interactions.md](docs/example-interactions.md) | Example conversations plan |
+| [docs/deployment.md](docs/deployment.md) | Deploying on Vercel |
 | [examples/](examples/) | 5 example conversations (English) |
 
 ## 🧾 Materials

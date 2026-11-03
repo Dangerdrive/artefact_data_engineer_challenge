@@ -64,3 +64,14 @@ def test_pronoun_followup_uses_previous_product(agent: Agent) -> None:
 def test_very_long_message_is_guarded(agent: Agent) -> None:
     reply = agent.chat("x" * 5000)
     assert "long" in reply.lower() or "summarize" in reply.lower()
+
+
+def test_purchase_intent_is_not_treated_as_order_status(agent: Agent) -> None:
+    reply = agent.chat("I want to order 2 guitars")
+    assert "Order #" not in reply
+    assert "delivered" not in reply
+
+
+def test_portuguese_policy_answer(agent: Agent) -> None:
+    reply = agent.chat("Qual é o horário de funcionamento?")
+    assert "segunda" in reply

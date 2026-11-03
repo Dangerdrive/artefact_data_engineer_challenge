@@ -191,6 +191,81 @@ POLICY_KB: list[dict[str, Any]] = [
     },
 ]
 
+# Portuguese answers for the offline mode (mirrors POLICY_KB).
+POLICY_KB_PT: dict[str, str] = {
+    "about": (
+        "A Empório da Música é uma loja de instrumentos musicais fundada em 2008 em "
+        "Campo Grande/MS. Endereço: Rua 14 de Maio, 3200 — Centro, Campo Grande-MS "
+        "(CEP 79202-333). Telefone/WhatsApp: (67) 3341-4444. E-mail: "
+        "contato@emporiodamusica.com.br. Vendemos exclusivamente instrumentos musicais "
+        "(guitarras, baixos, violões, baterias, teclados, sopros, cordas orquestrais e "
+        "ukuleles)."
+    ),
+    "hours": (
+        "Nosso horário é de segunda a sexta, das 09:00 às 18:00; sábado, das 09:00 às "
+        "13:00; fechado aos domingos e feriados. Em datas especiais (Black Friday, "
+        "aniversário da loja, Natal) o horário pode ser estendido, divulgado nas redes "
+        "sociais."
+    ),
+    "payment": (
+        "Aceitamos PIX (5% de desconto sobre o preço de tabela), cartão de débito, cartão "
+        "de crédito (até 12x sem juros) e boleto. Parcelamento: até 3x sem valor mínimo "
+        "(exceto parcelas abaixo de R$ 50); de 4x a 6x com parcela mínima de R$ 80; de 7x "
+        "a 12x com parcela mínima de R$ 100. Pagamentos combinados são permitidos em "
+        "compras acima de R$ 2.000."
+    ),
+    "returns": (
+        "Compras online podem ser devolvidas em até 7 dias corridos após o recebimento "
+        "(direito de arrependimento), na embalagem original; o reembolso é feito pelo "
+        "mesmo meio de pagamento em até 10 dias úteis e o frete da devolução é por nossa "
+        "conta. Produtos com defeito podem ser trocados em até 30 dias corridos. Trocas "
+        "por preferência (cor/modelo/tamanho) são permitidas em até 7 dias, sujeitas à "
+        "disponibilidade. Itens personalizados, itens de 'venda final' e boquilhas de "
+        "instrumentos de sopro não podem ser trocados."
+    ),
+    "shipping": (
+        "Na região metropolitana de Campo Grande, o frete é grátis acima de R$ 500; abaixo "
+        "disso, taxa fixa de R$ 35, com entrega em 1 a 3 dias úteis pela nossa própria "
+        "entrega. Para outras cidades, enviamos por Correios PAC (5–12 dias), SEDEX "
+        "(2–5 dias) ou Jadlog (3–8 dias), todos com rastreio e seguro. O custo é calculado "
+        "pelo CEP de destino, peso e dimensões. O código de rastreio tem o formato BR + 9 "
+        "caracteres + BR (ex.: BR4K7M2X9P1BR)."
+    ),
+    "promotions": (
+        "As promoções são periódicas (aniversário em agosto, Black Friday em novembro, "
+        "Volta às Aulas em fevereiro, Queima de Estoque, Semana do Músico). Elas não são "
+        "cumulativas e o desconto de 5% do PIX não se aplica sobre preços promocionais. "
+        "O preço promocional é sempre exibido junto com o preço original e o percentual "
+        "de desconto. Itens esgotados em promoção não geram vale de reposição."
+    ),
+    "service": (
+        "Nosso atendimento pelo WhatsApp usa um tom acolhedor, informal e profissional, "
+        "com respostas em até 5 minutos em horário comercial. Vendemos somente "
+        "instrumentos musicais, então não trabalhamos com acessórios como cordas, cabos, "
+        "palhetas, pedais, amplificadores ou cases — indicamos com prazer uma loja "
+        "parceira. Para reclamações, ouvimos, registramos e retornamos em até 24 horas "
+        "úteis."
+    ),
+    "warranty": (
+        "Todo produto tem garantia legal de 90 dias contra defeitos de fabricação a partir "
+        "do recebimento, além da garantia do fabricante (6 meses a 2 anos, conforme o "
+        "certificado). A garantia não cobre desgaste natural (trastes, cordas, feltros, "
+        "palhetas), mau uso/quedas/exposição extrema, reparos não autorizados ou danos "
+        "estéticos sem impacto funcional."
+    ),
+    "privacy": (
+        "Seguimos a LGPD. Os dados pessoais são usados apenas para processar/entregar "
+        "pedidos, comunicar status/rastreio, enviar promoções (com consentimento) e "
+        "cumprir obrigações legais. Não compartilhamos seus dados com terceiros para "
+        "marketing, e você pode solicitar a exclusão dos seus dados a qualquer momento."
+    ),
+    "final": (
+        "O manual é uma referência interna da equipe de atendimento (incluindo o "
+        "assistente virtual) e é atualizado periodicamente. Em caso de dúvida sobre uma "
+        "política, a equipe consulta a gerência antes de responder ao cliente."
+    ),
+}
+
 
 def _read_pdf_text(pdf_path: str | Path) -> str:
     from pypdf import PdfReader
@@ -269,6 +344,7 @@ class PolicyIndex:
                     "id": entry["id"],
                     "title": entry["title"],
                     "answer": entry["answer"],
+                    "answer_pt": POLICY_KB_PT.get(entry["id"], entry["answer"]),
                     "source_excerpt": self.source_sections.get(entry["id"], "")[:600],
                     "score": score,
                 }

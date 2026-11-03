@@ -23,8 +23,8 @@ Analysis of the 6 CSV files in `Desafio Técnico AI Engineer 2026/data/`.
 | `name` | string | Category name |
 | `description` | string | Category description |
 
-Categories: Guitars, Basses, Drums & Percussion, Keyboards & Pianos, Acoustic Guitars,
-Woodwind Instruments, Brass Instruments, Orchestral Strings, Ukuleles.
+Categories: Guitarras, Baixos, Baterias e Percussão, Teclados e Pianos, Violões,
+Instrumentos de Sopro (Madeiras), Instrumentos de Sopro (Metais), Cordas Orquestrais, Ukuleles.
 
 ---
 

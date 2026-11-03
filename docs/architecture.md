@@ -28,7 +28,7 @@ flowchart LR
 | **Interface** | Receive/send messages | CLI (`argparse`/`rich`) + optional FastAPI |
 | **Orchestrator** | Agent loop: decide tool vs. reply | ReAct + function calling via provider SDK |
 | **System prompt** | Persona, tone, scope and accuracy rules | Versioned template (Jinja2 or f-string) |
-| **Tools** | Deterministic data queries | Python + SQL over DuckDB |
+| **Tools** | Deterministic data queries | Python + SQL over SQLite (stdlib) |
 | **Data layer** | Load CSVs → in-memory SQLite; extract PDF | `sqlite3` (stdlib) + `pypdf` |
 | **Policies RAG** | Retrieve relevant manual sections | Chunking + embeddings + search (or BM25 for MVP) |
 | **History** | Multi-turn context per customer | In-memory + optional SQLite persistence |

@@ -11,7 +11,13 @@ from dataclasses import dataclass
 from pathlib import Path
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_DATA_DIR = PROJECT_ROOT / "Desafio Técnico AI Engineer 2026" / "data"
+_CANONICAL_DATA_DIR = PROJECT_ROOT / "data"
+_CHALLENGE_DATA_DIR = PROJECT_ROOT / "Desafio Técnico AI Engineer 2026" / "data"
+# Prefer the self-contained ./data folder (bundled for deployment); fall back to
+# the original challenge folder.
+DEFAULT_DATA_DIR = (
+    _CANONICAL_DATA_DIR if _CANONICAL_DATA_DIR.exists() else _CHALLENGE_DATA_DIR
+)
 
 # Placeholder values that should not be treated as real credentials.
 _PLACEHOLDER_KEYS = {

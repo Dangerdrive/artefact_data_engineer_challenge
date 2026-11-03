@@ -83,6 +83,24 @@ _POLICY_KEYWORDS = [
 
 _GREETING_WORDS = {"hi", "hello", "hey", "oi", "ola", "bom", "boa", "good", "eai", "e"}
 
+# Phrases that signal the customer wants to *place* an order (not check an existing one).
+_PURCHASE_PHRASES = [
+    "want to order", "would like to order", "like to order", "place an order",
+    "place order", "make an order", "order a", "order an", "order some", "order the",
+    "quero pedir", "quero encomendar", "gostaria de pedir", "gostaria de encomendar",
+    "fazer um pedido", "fazer pedido", "encomendar", "comprar", "quero comprar",
+    "gostaria de comprar", "want to buy", "would like to buy",
+]
+
+# Strong signals that the customer wrote in Portuguese (offline language routing).
+_PT_SIGNALS = [
+    "voce", "voces", "qual", "quais", "quanto custa", "custa", "preco", "prazo",
+    "troca", "devolucao", "devolver", "trocar", "horario", "funcionamento",
+    "atendimento", "garantia", "frete", "entrega", "pagamento", "desconto",
+    "como posso", "quero", "gostaria", "meu", "minha", "comprar", "compra",
+    "cartao", "parcelamento", "boleto", "funciona", "formas de pagamento",
+]
+
 
 def _fmt_money(value: float) -> str:
     return f"R$ {value:,.2f}"
@@ -287,6 +305,13 @@ class Agent:
         }
         return bool(intent) or len(tokens) <= 3
 
+    @staticmethod
+    def _is_purchase_intent(norm: str) -> bool:
+        """True when the message is about placing an order, not checking one."""
+        if Agent._has_any(norm, _PURCHASE_PHRASES):
+            return True
+        return bool(re.search(r"\b(?:order|pedir|encomendar|comprar|buy)\s+\d", norm))
+
     def _try_order(self, message: str, norm: str) -> str | None:
         tracking = re.search(r"\bBR[A-Z0-9]{9}BR\b", message.upper())
         mentions_order = self._has_any(norm, ["pedido", "order", "rastre", "track"])
@@ -296,6 +321,8 @@ class Agent:
         if tracking:
             order = self.tools.get_order_status(tracking_code=tracking.group(0))["order"]
         else:
+            if self._is_purchase_intent(norm):
+                return None
             number = re.search(r"\b(\d{1,5})\b", message)
             if not number:
                 return (
@@ -448,6 +475,13 @@ class Agent:
             parts.append(f"Items: {items}.")
         return " ".join(parts)
 
+    @staticmethod
+    def _is_portuguese(message: str) -> bool:
+        """Heuristic: accented characters or Portuguese signal words."""
+        if any(ch in message for ch in "áàâãéêíóôõúüçÁÀÂÃÉÊÍÓÔÕÚÜÇ"):
+            return True
+        return Agent._has_any(normalize(message), _PT_SIGNALS)
+
     def _policy_answer(self, question: str) -> str:
         results = self.tools.query_policies(question)["results"]
         if not results:
@@ -455,7 +489,10 @@ class Agent:
                 "I'm not totally sure about that policy. Could you rephrase it? "
                 "I can also connect you with our team."
             )
-        return results[0]["answer"]
+        entry = results[0]
+        if self._is_portuguese(question) and entry.get("answer_pt"):
+            return entry["answer_pt"]
+        return entry["answer"]
 
     def _store_info_answer(self) -> str:
         info = self.tools.get_store_info()

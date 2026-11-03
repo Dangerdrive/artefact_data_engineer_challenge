@@ -78,7 +78,7 @@ customer service.
 | Model/Provider | **DeepSeek `deepseek-chat`** (default) via OpenAI-compatible API; configurable | Low cost, function calling, easy provider swap without refactoring. |
 | Interface | **CLI** as MVP + optional **FastAPI** | Simple to run and demo; API ready to evolve. |
 | History | **In-memory + optional SQLite persistence** | Multi-turn context per customer; persistence enables continuity. |
-| Data handling | Load CSVs into **DuckDB/SQLite**; extract PDF into a RAG index | Fast, deterministic queries; semantic policies. |
+| Data handling | Load CSVs into **SQLite** (in-memory); extract PDF into a policies index | Fast, deterministic queries; keyword policy retrieval. |
 
 ---
 
@@ -94,7 +94,7 @@ flowchart LR
     O --> T2[Tool: price & stock]
     O --> T3[Tool: orders & tracking]
     O --> T4[Tool: policies RAG]
-    T1 & T2 & T3 --> DB[(DuckDB/SQLite<br/>CSV data)]
+    T1 & T2 & T3 --> DB[(SQLite<br/>CSV data)]
     T4 --> V[(Vector Store<br/>policies PDF)]
     O --> L[LLM Provider]
     O --> H[(Conversation History)]
@@ -147,7 +147,7 @@ Artefact_Data_Engineer/
 | F3 | Data layer (CSVs → SQLite; PDF extraction) | ✅ Done |
 | F4 | Agent tools (catalog, stock, orders, policies) | ✅ Done |
 | F5 | Orchestrator + prompt + persona | ✅ Done |
-| F6 | CLI and API | ✅ Done (CLI; API deferred) |
+| F6 | CLI and API | ✅ Done (CLI + FastAPI/Vercel) |
 | F7 | Automated tests | ✅ Done (30 tests) |
 | F8 | Example interactions (3–5 conversations) | ✅ Done (5 examples) |
 | F9 | Final README + review + submission | ⬜ Pending |
@@ -204,6 +204,9 @@ Summary of the adopted and documented best practices in
 | 2026-11-03 | Review/improvement pass: fixed ruff E501 (line-length 120), added an input-length guard, configurable `temperature`/`max_tokens`, an LLM history window, a CI workflow, an MIT license, an examples README and 7 new tests (37 total) | Ruff line-length 120 for verbose tool schemas; added CI + license; configurable generation params | Publish repo; optional FastAPI + persistence + embeddings |
 | 2026-11-03 | Configured the LLM mode for the **DeepSeek API** (OpenAI-compatible): provider defaults (base URL + `deepseek-chat`), `.env.example`, README/technical-decisions; added tests for the function-calling loop, offline fallback and provider defaults (40 total) | Default provider = DeepSeek `deepseek-chat` (supports tools); `deepseek-reasoner` noted as a non-tool alternative | Run a live smoke test with a real DeepSeek key; publish repo |
 | 2026-11-03 | Live-tested DeepSeek end-to-end (price/stock, order tracking, return policy) — passed; worked around a gzip-decompression bug in the bundled httpx by sending `Accept-Encoding: identity`; isolated config tests from a local `.env`; moved the API key out of `.env.example` into gitignored `.env` | DeepSeek verified working; workaround applied in the LLM client; tests independent of local secrets | Rotate the exposed key and publish the repo |
+| 2026-11-03 | Made the project **Vercel-ready**: FastAPI app (`src/api.py`), `api/index.py` ASGI entrypoint, `vercel.json` (python3.12, `includeFiles` src/data), self-contained `data/` copy, API tests, deployment docs | HTTP API reuses the same `Agent`; path-tolerant routes for Vercel rewrites; stateless in-memory sessions documented | Publish repo; set env vars in Vercel and deploy |
+| 2026-11-03 | Full technical review of the repository (docs, src, tests, examples, data) and produced a findings list + technical interview script | Review only, no code changes; top findings: possibly-exposed key in git history, keyword "RAG" vs. real retrieval, offline mode ignores the same-language rule, order-intent false positive, `CONVERSATION_STORE` unused | Address the findings before publishing (F9) |
+| 2026-11-03 | Fixed the high-value review findings: order-intent false positive in `_try_order` (purchase-phrase guard), bilingual policy answers for offline mode (PT KB + `_is_portuguese`), DuckDB→SQLite and PT category names in the docs; added 2 regression tests (42 total) | Fix real bugs and doc inconsistencies; justify (not fix) design tradeoffs (RAG label, `CONVERSATION_STORE` hook, English-only canned replies, keyword retriever) | Purge any exposed key from git history, then publish (F9) |
 
 ### Current State (summary)
 
@@ -212,9 +215,10 @@ Summary of the adopted and documented best practices in
 - [x] Python project scaffold (`src/`, `tests/`, `requirements.txt`, `pyproject.toml`)
 - [x] Data layer (CSV → SQLite, PDF extraction)
 - [x] Agent tools
-- [x] Orchestrator and prompt
-- [x] Interface (CLI; API deferred)
-- [x] Tests (40 passing) + ruff clean + CI workflow; DeepSeek LLM mode verified live
+- [x] Orchestrator a + FastAPI/Vercel)
+- [x] HTTP API (`src/api.py`, `api/index.py`) + `vercel.json`
+- [x] Tests (45 (CLI; API deferred)
+- [x] Tests (47 passing) + ruff clean + CI workflow; DeepSeek LLM mode verified live
 - [x] Example conversations (5)
 - [x] Final README, docs and license
 
@@ -222,7 +226,9 @@ Summary of the adopted and documented best practices in
 
 ## 11. Next Step
 
-1. Publish the repository publicly on GitHub with the current commit history.
-2. Final review: run the tests, re-check the examples, and polish the README.
-3. Optional next iterations: FastAPI endpoint, SQLite conversation persistence, and
+1. Before publishing: purge any exposed key from the git history (the remaining critical
+   item). The order-intent bug and the bilingual offline policy answers were already fixed.
+2. Publish the repository publicly on GitHub with the current commit history.
+3. Final review: run the tests, re-check the examples, and polish the README.
+4. Optional next iterations: FastAPI endpoint, SQLite conversation persistence, and
    embedding-based policy retrieval.

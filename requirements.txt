@@ -1,9 +1,11 @@
 # Runtime (required)
 pypdf>=5.0,<7
+fastapi>=0.110
 
 # Optional: LLM mode (OpenAI-compatible provider, e.g. DeepSeek)
 openai>=1.40
 
-# Development / quality
+# Development / quality / tests
 pytest>=7.4,<9
 ruff>=0.6,<1
+httpx>=0.27
