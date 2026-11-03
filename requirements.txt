@@ -1,19 +1,19 @@
-# Dependências do agente de atendimento Empório da Música.
-# Instalar: python -m pip install -r requirements.txt
+# Dependencies for the Empório da Música customer service agent.
+# Install: python -m pip install -r requirements.txt
 
-# --- LLM (SDK compatível com OpenAI API) ---
+# --- LLM (SDK compatible with the OpenAI API) ---
 openai>=1.40,<2
 python-dotenv>=1.0,<2
 
-# --- Dados ---
+# --- Data ---
 pandas>=2.2,<3
 duckdb>=1.0,<2
 pypdf>=5.0,<7
 
-# --- Interface (API opcional) ---
+# --- Interface (optional API) ---
 fastapi>=0.115,<1
 uvicorn[standard]>=0.30,<1
 
-# --- Qualidade / testes ---
+# --- Quality / testing ---
 pytest>=8.0,<9
 ruff>=0.6,<1

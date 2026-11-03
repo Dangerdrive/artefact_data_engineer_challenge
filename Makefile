@@ -1,26 +1,26 @@
 .PHONY: install run test lint format clean
 
-# Instala as dependências
+# Install dependencies
 install:
 	python -m pip install -r requirements.txt
 
-# Executa o agente (CLI)
+# Run the agent (CLI)
 run:
 	python -m src.cli
 
-# Executa os testes
+# Run the tests
 test:
 	pytest
 
-# Verifica lint
+# Check lint
 lint:
 	ruff check .
 
-# Formata o código
+# Format the code
 format:
 	ruff format .
 
-# Remove artefatos temporários
+# Remove temporary artifacts
 clean:
 	find . -type d -name __pycache__ -exec rm -rf {} +
 	rm -rf .pytest_cache .ruff_cache .tmp

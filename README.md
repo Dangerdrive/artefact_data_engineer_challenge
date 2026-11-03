@@ -1,45 +1,42 @@
-# Empório da Música — Agente de Atendimento (Desafio Artefact AI Engineer)
+# Empório da Música — Customer Service Agent (Artefact AI Engineer Challenge)
 
-> Repositório de trabalho para o desafio técnico de **AI Engineer** da Artefact (2026).
-> Missão: prototipar um agente de mensagens de texto em Python que atenda clientes da
-> loja fictícia **Empório da Música** (Campo Grande/MS).
+> Working repository for the **AI Engineer** technical challenge at Artefact (2026).
+> Mission: prototype a Python text-messaging agent that serves customers of the fictional
+> **Empório da Música** store (Campo Grande/MS, Brazil).
 
-## 📌 Estado Atual
+## 📌 Current Status
 
-- [x] Análise do desafio, dados e políticas
-- [x] Documentação de planejamento criada
-- [ ] Implementação do agente (em andamento — ver [planejamento](docs/planejamento.md))
+- [x] Challenge, data and policies analyzed
+- [x] Planning documentation created
+- [ ] Agent implementation (in progress — see [planning](docs/planning.md))
 
-> O status completo e o log de sessões estão em [`docs/planejamento.md`](docs/planejamento.md).
+> The full status and session log are in [`docs/planning.md`](docs/planning.md).
 
-## 🗂️ Navegação
+## 🗂️ Navigation
 
-| Documento | Conteúdo |
-|-----------|----------|
-| [docs/planejamento.md](docs/planejamento.md) | **Fonte de verdade** — plano de implantação + log de estado do projeto |
-| [docs/dados.md](docs/dados.md) | Dicionário e estatísticas dos 6 CSVs |
-| [docs/politicas.md](docs/politicas.md) | Resumo do manual de políticas da loja |
-| [docs/arquitetura.md](docs/arquitetura.md) | Arquitetura proposta da solução |
-| [docs/decisoes_tecnicas.md](docs/decisoes_tecnicas.md) | Decisões técnicas justificadas |
-| [docs/boas_praticas.md](docs/boas_praticas.md) | Boas práticas incluídas no projeto |
-| [docs/exemplos_interacoes.md](docs/exemplos_interacoes.md) | Planejamento dos exemplos de conversa |
+| Document | Content |
+|----------|---------|
+| [docs/planning.md](docs/planning.md) | **Source of truth** — implementation plan + project state log |
+| [docs/data.md](docs/data.md) | Data dictionary and statistics of the 6 CSVs |
+| [docs/policies.md](docs/policies.md) | Store policies manual digest |
+| [docs/architecture.md](docs/architecture.md) | Proposed solution architecture |
+| [docs/technical-decisions.md](docs/technical-decisions.md) | Justified technical decisions |
+| [docs/best-practices.md](docs/best-practices.md) | Best practices included in the project |
+| [docs/example-interactions.md](docs/example-interactions.md) | Plan for the example conversations |
 
-## 🧭 Materiais Originais
+## 🧭 Original Materials
 
-- `Desafio Técnico AI Engineer 2026/desafio_tecnico_ai_eng_artefact.pdf` — enunciado do desafio
-- `Desafio Técnico AI Engineer 2026/data/*.csv` — dados da operação
-- `Desafio Técnico AI Engineer 2026/data/políticas_da_loja.pdf` — manual de políticas e procedimentos
+- `Desafio Técnico AI Engineer 2026/desafio_tecnico_ai_eng_artefact.pdf` — challenge brief
+- `Desafio Técnico AI Engineer 2026/data/*.csv` — operational data
+- `Desafio Técnico AI Engineer 2026/data/políticas_da_loja.pdf` — policies and procedures manual
 
-## 🧠 Skill de Manutenção
+## 🧠 Maintenance Skill
 
-Este repositório possui uma skill (`.github/skills/emporio-musica-agent/SKILL.md`) que
-garante que **o estado do projeto seja registrado em `docs/planejamento.md` ao final de
-toda sessão de trabalho**.
+This repository has a skill (`.github/skills/emporio-musica-agent/SKILL.md`) that ensures
+**the project state is recorded in `docs/planning.md` at the end of every work session**.
 
-## ⚠️ Entregáveis Finais (obrigatórios)
+## ⚠️ Mandatory Deliverables
 
-1. Repositório Git público com histórico de commits real.
-2. `README.md` **em inglês** (instruções, decisões, limitações, uso de IA).
-3. 3 a 5 exemplos de conversa, incluindo ao menos um cenário não trivial.
-
-> Documentos internos em `docs/` estão em português; os entregáveis finais devem ser em inglês.
+1. Public Git repository with a real commit history.
+2. `README.md` in **English** (setup, decisions, limitations, AI-assistant usage).
+3. 3 to 5 example conversations, including at least one non-trivial scenario.

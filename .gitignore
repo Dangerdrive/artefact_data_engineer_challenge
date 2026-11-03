@@ -11,7 +11,7 @@ venv/
 env/
 ENV/
 
-# Testes / análise estática
+# Tests / static analysis
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
@@ -21,12 +21,12 @@ htmlcov/
 .tox/
 .nox/
 
-# Ambiente / segredos
+# Environment / secrets
 .env
 .env.*
 !.env.example
 
-# Dados gerados e caches
+# Generated data and caches
 .tmp/
 *.db
 *.sqlite
@@ -34,7 +34,7 @@ htmlcov/
 *.parquet
 *.duckdb
 
-# IDE / SO
+# IDE / OS
 .vscode/
 .idea/
 .DS_Store

@@ -1,60 +1,60 @@
 ---
 name: emporio-musica-agent
-description: 'Fluxo de trabalho e manutenção do estado do projeto do agente de atendimento da Empório da Música (desafio Artefact AI Engineer). Use quando: trabalhar neste projeto, iniciar ou concluir tarefas, registrar progresso, atualizar o planejamento, consultar dados ou políticas da loja, implementar ou testar o agente Python de atendimento ao cliente. Regra obrigatória: atualizar docs/planejamento.md com o estado do projeto ao final de toda sessão.'
+description: 'Workflow and project-state maintenance for the Empório da Música customer service agent (Artefact AI Engineer challenge). Use when: working on this project, starting or finishing tasks, recording progress, updating the planning, querying store data or policies, implementing or testing the Python customer service agent. Mandatory rule: update docs/planning.md with the project state at the end of every session.'
 ---
 
-# Agente de Atendimento — Empório da Música
+# Empório da Música — Customer Service Agent
 
-## Objetivo
+## Objective
 
-Manter o projeto **documentado, rastreável e consistente** enquanto o agente de
-atendimento da Empório da Música é planejado e implementado.
+Keep the project **documented, traceable, and consistent** while the Empório da Música
+customer service agent is planned and implemented.
 
-O documento-fonte de verdade é [`docs/planejamento.md`](../../../docs/planejamento.md).
-Toda mudança relevante deve ser registrada nele.
+The source of truth is [`docs/planning.md`](../../../docs/planning.md).
+Every relevant change must be recorded there.
 
-## Quando Usar
+## When to Use
 
-- Iniciar ou retomar qualquer trabalho neste projeto.
-- Implementar features do agente (tools, orquestrador, CLI, API, dados).
-- Escrever testes, exemplos de conversa ou documentação.
-- Revisar decisões técnicas ou arquitetura.
-- Preparar a entrega final do desafio (README em inglês, exemplos, repositório).
+- Start or resume any work on this project.
+- Implement agent features (tools, orchestrator, CLI, API, data).
+- Write tests, example conversations, or documentation.
+- Review technical decisions or architecture.
+- Prepare the final challenge submission (English README, examples, repository).
 
-## Procedimento (obrigatório em toda sessão)
+## Procedure (mandatory every session)
 
-1. **Ler o estado atual** — abrir [`docs/planejamento.md`](../../../docs/planejamento.md)
-   e ler a seção `Estado do Projeto` antes de começar a trabalhar.
-2. **Executar a tarefa** — fazer as alterações de código ou documentação necessárias.
-3. **Atualizar o planejamento** — ao final da sessão:
-   - Adicionar **uma nova linha** na tabela `Registro de Sessões` com:
-     data, atividades realizadas, decisões tomadas e pendências/próximo passo.
-   - Atualizar a seção `Estado Atual (resumo)` marcando/desmarcando os checkboxes.
-   - Atualizar a seção `Próximo Passo` com o que deve ser feito em seguida.
-4. **Atualizar fases** — se uma fase de `Fases de Implementação` mudar de status,
-   refletir isso na tabela.
-5. **Sincronizar docs auxiliares** — se dados, políticas, arquitetura ou decisões
-   mudarem, atualizar o respectivo arquivo em `docs/`.
+1. **Read the current state** — open [`docs/planning.md`](../../../docs/planning.md)
+   and read the `Project State` section before starting work.
+2. **Do the task** — make the necessary code or documentation changes.
+3. **Update the planning** — at the end of the session:
+   - Add **one new row** to the `Session Log` table with: date, work done, decisions
+     taken, and pending/next step.
+   - Update the `Current State (summary)` section by checking/unchecking the checkboxes.
+   - Update the `Next Step` section with what should be done next.
+4. **Update phases** — if a phase in `Implementation Phases` changes status, reflect it
+   in the table.
+5. **Sync auxiliary docs** — if data, policies, architecture, or decisions change, update
+   the corresponding file in `docs/`.
 
-## Formato do Registro de Sessão
+## Session Log Format
 
-| Data | Atividades realizadas | Decisões tomadas | Pendências / próximo passo |
-|------|----------------------|------------------|----------------------------|
-| AAAA-MM-DD | … | … | … |
+| Date | Work done | Decisions | Pending / next step |
+|------|-----------|-----------|---------------------|
+| YYYY-MM-DD | … | … | … |
 
-## Recursos do Projeto
+## Project Resources
 
-- Planejamento (fonte de verdade): [`docs/planejamento.md`](../../../docs/planejamento.md)
-- Dicionário de dados: [`docs/dados.md`](../../../docs/dados.md)
-- Políticas da loja: [`docs/politicas.md`](../../../docs/politicas.md)
-- Arquitetura: [`docs/arquitetura.md`](../../../docs/arquitetura.md)
-- Decisões técnicas: [`docs/decisoes_tecnicas.md`](../../../docs/decisoes_tecnicas.md)
-- Boas práticas: [`docs/boas_praticas.md`](../../../docs/boas_praticas.md)
-- Exemplos de interação: [`docs/exemplos_interacoes.md`](../../../docs/exemplos_interacoes.md)
+- Planning (source of truth): [`docs/planning.md`](../../../docs/planning.md)
+- Data dictionary: [`docs/data.md`](../../../docs/data.md)
+- Store policies: [`docs/policies.md`](../../../docs/policies.md)
+- Architecture: [`docs/architecture.md`](../../../docs/architecture.md)
+- Technical decisions: [`docs/technical-decisions.md`](../../../docs/technical-decisions.md)
+- Best practices: [`docs/best-practices.md`](../../../docs/best-practices.md)
+- Example interactions: [`docs/example-interactions.md`](../../../docs/example-interactions.md)
 
-## Regras de Ouro
+## Golden Rules
 
-- **Nunca terminar uma sessão sem registrar** o progresso em `docs/planejamento.md`.
-- **Entregáveis finais em inglês** (README e exemplos de conversa); docs internas em português.
-- **Nunca inventar preço, estoque ou prazo** — sempre consultar as tools/dados (política da loja).
-- Manter o histórico de commits Git **real e incremental** (nunca force-push de um commit único).
+- **Never finish a session without recording** progress in `docs/planning.md`.
+- **All deliverables in English** (README and example conversations).
+- **Never invent price, stock, or deadlines** — always query the tools/data (store policy).
+- Keep the Git commit history **real and incremental** (never force-push a single commit).
