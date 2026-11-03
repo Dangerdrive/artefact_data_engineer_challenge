@@ -32,6 +32,20 @@ def _load_dotenv(path: Path) -> None:
             os.environ[key] = value
 
 
+def _env_float(name: str, default: float) -> float:
+    try:
+        return float(os.getenv(name, default))
+    except (TypeError, ValueError):
+        return default
+
+
+def _env_int(name: str, default: int) -> int:
+    try:
+        return int(os.getenv(name, default))
+    except (TypeError, ValueError):
+        return default
+
+
 @dataclass(frozen=True)
 class Settings:
     """Resolved application settings."""
@@ -42,6 +56,8 @@ class Settings:
     base_url: str | None
     log_level: str
     conversation_store: str
+    temperature: float = 0.3
+    max_tokens: int = 512
 
     @property
     def llm_enabled(self) -> bool:
@@ -65,6 +81,8 @@ def load_settings(project_root: Path | None = None) -> Settings:
         base_url=(os.getenv("LLM_BASE_URL") or None),
         log_level=os.getenv("LOG_LEVEL", "INFO").upper(),
         conversation_store=os.getenv("CONVERSATION_STORE", "memory"),
+        temperature=_env_float("LLM_TEMPERATURE", 0.3),
+        max_tokens=_env_int("LLM_MAX_TOKENS", 512),
     )
 
 

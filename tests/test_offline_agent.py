@@ -53,3 +53,14 @@ def test_conversation_history_is_tracked(agent: Agent) -> None:
     assert len(agent.history) == 4
     assert agent.history[0]["role"] == "user"
     assert agent.history[-1]["role"] == "assistant"
+
+
+def test_pronoun_followup_uses_previous_product(agent: Agent) -> None:
+    agent.chat("How much is the Takamine GD20?")
+    reply = agent.chat("Do you have it in stock?")
+    assert "Takamine GD20" in reply
+
+
+def test_very_long_message_is_guarded(agent: Agent) -> None:
+    reply = agent.chat("x" * 5000)
+    assert "long" in reply.lower() or "summarize" in reply.lower()

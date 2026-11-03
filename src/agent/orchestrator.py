@@ -25,6 +25,9 @@ from .tools import TOOL_SPECS, StoreTools
 
 logger = logging.getLogger(__name__)
 
+MAX_MESSAGE_CHARS = 2000
+MAX_HISTORY_MESSAGES = 20
+
 _STOPWORDS = set(
     """the a an is are do does did you your i my me of for to please how much what
     which can could would have has it this that and or in on at with about there any
@@ -112,6 +115,11 @@ class Agent:
         message = (message or "").strip()
         if not message:
             return "Hi! How can I help you today?"
+        if len(message) > MAX_MESSAGE_CHARS:
+            return (
+                "That message is a bit long for me — could you summarize it in a few "
+                "sentences so I can help you faster?"
+            )
 
         self.history.append({"role": "user", "content": message})
         if self.settings.llm_enabled:
@@ -131,8 +139,9 @@ class Agent:
         from openai import OpenAI  # imported lazily so offline mode needs no extra dep
 
         client = OpenAI(api_key=self.settings.api_key, base_url=self.settings.base_url or None)
+        recent = self.history[-MAX_HISTORY_MESSAGES:]
         messages: list[dict[str, Any]] = [{"role": "system", "content": SYSTEM_PROMPT}] + [
-            {"role": m["role"], "content": m["content"]} for m in self.history
+            {"role": m["role"], "content": m["content"]} for m in recent
         ]
 
         for _ in range(6):
@@ -141,7 +150,8 @@ class Agent:
                 messages=messages,
                 tools=TOOL_SPECS,
                 tool_choice="auto",
-                temperature=0.3,
+                temperature=self.settings.temperature,
+                max_tokens=self.settings.max_tokens,
             )
             msg = response.choices[0].message
             tool_calls = getattr(msg, "tool_calls", None)

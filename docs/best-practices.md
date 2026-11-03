@@ -94,6 +94,14 @@ List of best practices adopted in this project, with what was included and why.
 
 ---
 
+## 15. Continuous Integration and License
+
+- **What:** GitHub Actions workflow running `ruff` + `pytest` on push/PR; MIT `LICENSE`.
+- **Why:** catch regressions early and make reuse terms explicit for a public repo.
+- **Status:** ✅ included (`.github/workflows/ci.yml`, `LICENSE`).
+
+---
+
 ## Status Summary
 
 - ✅ **Included:** Git, `.gitignore`, `.env.example`, `requirements.txt`, `.editorconfig`,

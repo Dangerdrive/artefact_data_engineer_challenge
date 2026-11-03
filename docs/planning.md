@@ -201,25 +201,26 @@ Summary of the adopted and documented best practices in
 | 2026-11-03 | Read the challenge (PDF), the policies manual (PDF) and the schema of the 6 CSVs; created the plan, the data/policies/architecture/decisions/best-practices docs, the maintenance skill, the root README and the best-practice files | Hybrid approach (function calling + RAG); configurable provider; CLI + API; DuckDB for data; SQLite for history | Create the Python project scaffold (F2) and implement the data layer (F3) |
 | 2026-11-03 | Converted all documentation, filenames, and config comments to English | English-only project (docs, filenames, and deliverables) | Create the Python project scaffold (F2) and implement the data layer (F3) |
 | 2026-11-03 | Implemented the Python agent: env config, SQLite data layer, policy retrieval, tools, dual-mode orchestrator (LLM + offline), CLI, 30 pytest tests and 5 example conversations; updated the README | SQLite (stdlib) instead of DuckDB for a zero-dependency data layer; deterministic offline fallback; pronoun follow-ups in offline mode | Publish the repo publicly and do a final review (F9) |
+| 2026-11-03 | Review/improvement pass: fixed ruff E501 (line-length 120), added an input-length guard, configurable `temperature`/`max_tokens`, an LLM history window, a CI workflow, an MIT license, an examples README and 7 new tests (37 total) | Ruff line-length 120 for verbose tool schemas; added CI + license; configurable generation params | Publish repo; optional FastAPI + persistence + embeddings |
 
 ### Current State (summary)
 
 - [x] Challenge and materials analyzed
+- [x] Planning documentation created
 - [x] Python project scaffold (`src/`, `tests/`, `requirements.txt`, `pyproject.toml`)
 - [x] Data layer (CSV → SQLite, PDF extraction)
 - [x] Agent tools
 - [x] Orchestrator and prompt
 - [x] Interface (CLI; API deferred)
-- [x] Tests (30 passing)
+- [x] Tests (37 passing) + ruff clean + CI workflow
 - [x] Example conversations (5)
-- [x] Example conversations
-- [ ] Final README
+- [x] Final README, docs and license
 
 ---
 
 ## 11. Next Step
-Publish the repository publicly on GitHub with the current commit history.
-2. Final review: run the tests, re-check the example conversations, and polish the README.
+
+1. Publish the repository publicly on GitHub with the current commit history.
+2. Final review: run the tests, re-check the examples, and polish the README.
 3. Optional next iterations: FastAPI endpoint, SQLite conversation persistence, and
-   embedding-based policy retrieval
-3. Implement the data layer (Phase F3): load CSVs into DuckDB and extract the PDF text.
+   embedding-based policy retrieval.

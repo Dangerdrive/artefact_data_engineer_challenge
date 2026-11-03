@@ -62,3 +62,8 @@ def test_store_info_tool(store: DataStore, policies: PolicyIndex) -> None:
 def test_dispatch_unknown_tool(store: DataStore, policies: PolicyIndex) -> None:
     result = _tools(store, policies).dispatch("does_not_exist", {})
     assert "error" in result
+
+
+def test_dispatch_invalid_arguments(store: DataStore, policies: PolicyIndex) -> None:
+    result = _tools(store, policies).dispatch("get_product", {"unexpected": 1})
+    assert "error" in result

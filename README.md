@@ -60,6 +60,9 @@ offline mode.
 python -m pytest
 ```
 
+CI runs lint (`ruff`) and tests (`pytest`) on every push/PR — see
+`.github/workflows/ci.yml`.
+
 ---
 
 ## 🧠 How it works
