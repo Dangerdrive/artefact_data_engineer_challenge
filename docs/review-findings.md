@@ -39,9 +39,9 @@
 
 ## Security note before publishing
 
-- **API key exposure (resolved; no history rewrite needed).** A real key was briefly pasted
-  into a working copy of `.env.example` and shared in chat, but it was moved to the
-  git-ignored `.env` and `.env.example` was reverted **before any commit**. A scan of every
-  commit found **no real key in the Git history**, and `.env` is untracked. Recommended
-  action: **rotate the key** as a precaution (it was shared), then set the new key only in
-  `.env` / Vercel environment variables — never in tracked files.
+- **API key exposure (verified 2026-11-03 — no history rewrite needed).** A scan of every
+  commit and blob found **no real key in the Git history**: only `.env.example` (placeholder
+  values) is tracked, and `.env` is gitignored/untracked. A real key was briefly pasted in a
+  working copy and shared in chat, but it never reached a commit. Recommended action:
+  **rotate the key** as a precaution, then set the new key only in `.env` / Vercel
+  environment variables — never in tracked files.

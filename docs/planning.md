@@ -208,6 +208,7 @@ Summary of the adopted and documented best practices in
 | 2026-11-03 | Full technical review of the repository (docs, src, tests, examples, data) and produced a findings list + technical interview script | Review only, no code changes; top findings: possibly-exposed key in git history, keyword "RAG" vs. real retrieval, offline mode ignores the same-language rule, order-intent false positive, `CONVERSATION_STORE` unused | Address the findings before publishing (F9) |
 | 2026-11-03 | Fixed the high-value review findings: order-intent false positive in `_try_order` (purchase-phrase guard), bilingual policy answers for offline mode (PT KB + `_is_portuguese`), DuckDB→SQLite and PT category names in the docs; added 2 regression tests (42 total) | Fix real bugs and doc inconsistencies; justify (not fix) design tradeoffs (RAG label, `CONVERSATION_STORE` hook, English-only canned replies, keyword retriever) | Purge any exposed key from git history, then publish (F9) |
 | 2026-11-03 | Updated the README (bilingual offline policies, limitation note, docs index) and `technical-decisions.md`; created `docs/review-findings.md` with the remaining findings + justifications | Keep the remaining items as justified design choices (no further code change) | Publish after purging the exposed key from git history |
+| 2026-11-03 | Verified the full git history for leaked API keys: none found (only `.env.example` placeholders are tracked; `.env` is gitignored); updated `review-findings.md` and `planning.md` accordingly | No history rewrite needed; rotate the DeepSeek key only as a precaution | Publish the repo publicly |
 
 ### Current State (summary)
 
@@ -227,8 +228,9 @@ Summary of the adopted and documented best practices in
 
 ## 11. Next Step
 
-1. Before publishing: purge any exposed key from the git history (the remaining critical
-   item). The order-intent bug and the bilingual offline policy answers were already fixed.
+1. Verified 2026-11-03: no real API key exists in the git history (only `.env.example`
+   placeholders are tracked; `.env` is gitignored) — no rewrite needed. Rotate the DeepSeek
+   key as a precaution if it was ever shared outside the repo.
 2. Publish the repository publicly on GitHub with the current commit history.
 3. Final review: run the tests, re-check the examples, and polish the README.
 4. Optional next iterations: FastAPI endpoint, SQLite conversation persistence, and
