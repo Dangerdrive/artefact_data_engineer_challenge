@@ -39,4 +39,8 @@ htmlcov/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Submission artifacts (personal response document, not repo content)
+docs/*.pdf
+*Zone.Identifier
 *:Zone.Identifier
