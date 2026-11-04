@@ -103,6 +103,9 @@ deterministic offline mode that share the exact same tools.
   to offline mode instead of breaking the conversation.
 - Sharing the tool layer between both modes guarantees the numbers (price/stock/order) come
   from the same deterministic source in either mode.
+- The offline responder routes policy answers by language (EN/PT) and guards against
+  purchase-intent phrases ("I want to order 2 guitars") being mistaken for order-status
+  lookups.
 
 ---
 

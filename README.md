@@ -16,7 +16,8 @@ retrieval (RAG) for the policies manual.
 - **Catalog & price search** with budget/category filters and active-promotion pricing.
 - **Stock awareness** (out-of-stock, discontinued and coming-soon handling).
 - **Order status & tracking** by order id or tracking code.
-- **Policy answers** (returns, hours, payment, shipping, warranty, privacy) via retrieval.
+- **Policy answers** (returns, hours, payment, shipping, warranty, privacy) via retrieval —
+  bilingual (English/Portuguese) in offline mode.
 - **Out-of-scope handling** (politely redirects accessory requests).
 - **Conversation history** in memory, with pronoun follow-ups ("Do you have *it* in stock?").
 - **Two execution modes:**
@@ -133,6 +134,8 @@ Full rationale: [`docs/technical-decisions.md`](docs/technical-decisions.md).
 
 - The **offline mode** is intentionally rule-based and covers the main intents; the
   **LLM mode** is the general-purpose path.
+- Offline **policy** answers are bilingual (EN/PT); the other offline replies (greeting,
+  price, out-of-scope) are currently English-only.
 - No persistent storage across processes yet (history is in memory).
 - Shipping for other cities is an estimate; real quotes need ZIP/weight/dimensions.
 - Next steps: optional FastAPI endpoint, SQLite conversation persistence, embedding-based
@@ -167,6 +170,7 @@ session log of the work.
 | [docs/best-practices.md](docs/best-practices.md) | Best practices included |
 | [docs/example-interactions.md](docs/example-interactions.md) | Example conversations plan |
 | [docs/deployment.md](docs/deployment.md) | Deploying on Vercel |
+| [docs/review-findings.md](docs/review-findings.md) | Technical review: additional findings & justifications |
 | [examples/](examples/) | 5 example conversations (English) |
 
 ## 🧾 Materials
