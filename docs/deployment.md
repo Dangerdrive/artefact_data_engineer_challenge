@@ -8,8 +8,8 @@ function** (ASGI). The same `Agent` used by the CLI serves the API.
 | File | Role |
 |------|------|
 | `src/api.py` | FastAPI app + `create_app()` factory |
-| `api/index.py` | Vercel entrypoint that exports the ASGI `app` |
-| `vercel.json` | Python runtime, `maxDuration`, bundled `src/` + `data/`, rewrites |
+| `index.py` | Vercel entrypoint that re-exports the ASGI `app` from `src.api` |
+| `requirements.txt` / `pyproject.toml` | Runtime dependencies (`fastapi`, `pypdf`, `openai`) installed by Vercel |
 | `data/` | Self-contained copy of the CSVs + policies PDF (bundled for serverless) |
 
 ## Endpoints
@@ -37,7 +37,9 @@ Response:
 
 1. Push the repository to GitHub (must be public for the challenge).
 2. In Vercel: **Add New → Project → Import** the repository.
-3. Framework preset: **Other** (the `vercel.json` already configures the Python runtime).
+3. Framework preset: **FastAPI** (Vercel detects it from `requirements.txt`, installs the
+   dependencies and serves the `app` exported by `index.py`). Keep the default build and
+   output settings.
 4. Configure **Environment Variables** (Project Settings → Environment Variables):
 
    | Name | Value |
@@ -70,8 +72,8 @@ curl -s -X POST https://<your-project>.vercel.app/api/chat \
 - **Timeouts:** `maxDuration` is set to 60s in `vercel.json`; actual limits depend on
   your Vercel plan. DeepSeek calls are usually fast.
 - **Env vars only:** never commit `.env`; set secrets in the Vercel dashboard.
-- **Data:** bundled from `data/` via `includeFiles`. If you change the dataset, update
-  `data/` and redeploy.
+- **Data:** the whole project (including `data/`) is bundled with the Python function. If
+  you change the dataset, update `data/` and redeploy.
 
 ## Local run (optional)
 
